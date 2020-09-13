@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run dist/js/app.6909520c.js"
+    "start": "npm run dist/js/app.6909520c.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
