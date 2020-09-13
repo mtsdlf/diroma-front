@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run dist/js/app.6909520c.js",
+    "start": "npm run server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "express": "4.17.1",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "register-service-worker": "^1.7.1",
