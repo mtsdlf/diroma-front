@@ -1,3 +1,3 @@
 export const server = {
-  baseURL: "https://diroma-back.herokuapp.com:80"
+  baseURL: "104.248.7.235:3000"
 };
