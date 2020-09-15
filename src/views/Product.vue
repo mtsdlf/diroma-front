@@ -26,7 +26,7 @@
               <td rowspan="1">{{ product.code }}</td>
               <td rowspan="1">{{ product.category }}</td>
               <td rowspan="1">{{ product.description }}</td>
-              <td rowspan="1">${{ product.oldValue }} / {{this.timeDate(product.timestamp)}}</td>
+              <td rowspan="1">${{ product.oldValue }} / {{timeDate(product.timestamp)}}</td>
               <td rowspan="1"  style="width:60px">
                 <tr style="width:100%; display:block; background:yellow; border-radius: 10px; color: black; font-size:  14px">
                   <router-link
