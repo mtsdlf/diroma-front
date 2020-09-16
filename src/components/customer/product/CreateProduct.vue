@@ -9,43 +9,50 @@
         <div class="input-box">
           <input id="pname"
             v-model="pname"
-            :required="true"
+            required="true"
             type="text" placeholder="Nombre del artículo(*)"
           />
         </div>
 
         <div class="input-box">
+          <select ref="category"
+            required="true"
+            @change="onChange()" 
+            >
+             <option selected="true"> 
+              Seleccione
+            </option>
+            <option value="Almacén">
+              Almacén
+            </option>
+            <option  value="Fiambrería">
+              Fiambrería
+            </option>
+          </select>
+        </div>
+        
+        <div class="input-box">
           <input id="cost" ref="cost"
             v-model="cost"
-            :required="true"
-            type="number"  step="0.1" min="0" placeholder="Precio(*)"
+            required="true"
+            type="number"  step="0.01" min="0" placeholder="Precio(*)"
           />
         </div>
 
         <div class="input-box">
-          <input id="stock"
+          <input ref="stock"
             v-model="stock"
-            :required="true"
-            type="number" step="0.001" min="0" placeholder="Cantidad(*)"
+            required="true"
+            type="number" step="1" min="0" placeholder="Cantidad(*)"
           />
         </div>
 
         <div class="input-box">
           <input id="code"
             v-model="code"
-            :required="true"
+            required="true"
             type="text" placeholder="Código de Referencia(*)"
           />
-        </div>
-
-        <div class="input-box">
-          <select 
-            v-model="category"
-            :required="true"
-            >
-            <option>Almacén</option>
-            <option>Fiambrería</option>
-          </select>
         </div>
         
         <div class="input-box">
@@ -88,22 +95,32 @@ export default {
     };
   },
   methods: {
-
+    onChange() {
+      if (this.$refs.category.value == "Fiambrería") {
+        this.$refs.stock.step = 0.001;
+      } else {
+         this.$refs.stock.step = 1;
+      }
+    },
     redirect(componentName) {
       this.$router.push({name:`${componentName}`});
     }, 
 
     createProduct() {
+       if (this.$refs.category.selectedIndex == 0) {
+        alert('No ingresó categoría');
+      } else {
       const productData = {
         pname: this.pname,
         cost: this.cost,
         stock: this.stock,
         code: this.code,
-        category: this.category,
+        category: this.$refs.category.value,
         description: this.description,
         oldValue: this.cost
       };
       this.__submitToServer(productData);
+      }
     },
 
     __submitToServer(data) {

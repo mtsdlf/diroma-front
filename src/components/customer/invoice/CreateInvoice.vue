@@ -38,7 +38,7 @@
            @change="onChange()" 
             required="true">
             <option selected="true">
-              Seleccione uno
+              Seleccione
             </option>
             <option
               v-for="product in products"
@@ -132,6 +132,8 @@ export default {
       const category = this.getProperty(this.$refs.selectedProd.value, "category");
       if (category == "Fiambrería") {
         this.$refs.prodQty.step = 0.001;
+      } else {
+        this.$refs.stock.step = 1;
       }
     },
     redirect(componentName) {
