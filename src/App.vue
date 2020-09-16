@@ -2,8 +2,6 @@
   <div id="app">
       <h1>DI ROMA</h1>
     <div id="nav">
-      <router-link to="/">| Inicio | </router-link> 
-      <router-link to="/about"> Acerca de Nosotros | </router-link>
       <router-link to="/product"> Stock | </router-link>
       <router-link to="/invoice"> Facturación | </router-link>
     </div>

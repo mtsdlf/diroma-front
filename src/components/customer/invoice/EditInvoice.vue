@@ -31,7 +31,7 @@
           <button @click="redirect('Invoice')" style="background:#0f55e4; margin-right:20%; padding:10px">
             Volver
           </button>
-          <button @click="createInvoice" style="background:#219E45; padding:10px">
+          <button @click="editInvoice" style="background:#219E45; padding:10px">
             Guardar
           </button>
          
@@ -58,7 +58,7 @@
       </tbody>
     </table>
     <br>
-      PRECIO TOTAL = {{invoice.total}}
+      TOTAL: ${{invoice.total}}
   </div>
 </div>
 </template>

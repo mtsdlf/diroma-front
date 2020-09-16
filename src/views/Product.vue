@@ -76,16 +76,18 @@ export default {
   methods: {
     timeDate(timestamp) {
       return timestamp.substring(5,10);
-
     },
+
     redirect(componentName) {
         this.$router.push({name: componentName})
     },
+
     async fetchProducts() {
       return axios
         .get(`${server.baseURL}/product/products`)
         .then(data => (this.products = data.data));
   },
+  
     deleteProduct(id) {
       const r = confirm("Esta seguro que desea eliminar el producto del inventario?") 
       if (r == true ) {

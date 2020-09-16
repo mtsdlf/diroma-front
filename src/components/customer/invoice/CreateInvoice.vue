@@ -35,31 +35,31 @@
           <label name="title">Producto: </label>
           
           <select ref="selectedProd" style="width:40%"
+           @change="onChange()" 
             required="true">
+            <option selected="true">
+              Seleccione uno
+            </option>
             <option
               v-for="product in products"
               v-bind:key="product._id"
               :value="product._id"
-              selected="product == '1'"
+
               > 
               {{ product.pname }}
             </option>
           </select>
-<br>
+          <br>
           <input id="qty" ref="prodQty" style="width:80px; text-align:center"
             :required="true"
-            type="number"  step="0.001" min="0" placeholder="Cantidad"
+            type="number"  step="1" min="0" placeholder="Cantidad"
           />
-         
+
             <button style="border-radius:40px; color:black; align:center;margin-left:10%"
             @click="addToCart">
             Añadir
           </button>
-         
-          
         </div>
-
-    
 
         <div style="margin-top:20px">
           <button style="background:#0f55e4; margin-right:20%; padding:10px"
@@ -99,7 +99,7 @@
           
         </tbody>
       </table>
-      PRECIO TOTAL = {{total}}
+      TOTAL = ${{total}}
     </div>
   </div>
 </template>
@@ -128,11 +128,16 @@ export default {
     this.fetchProducts();
   },
   methods: {
-
+    onChange() {
+      const category = this.getProperty(this.$refs.selectedProd.value, "category");
+      if (category == "Fiambrería") {
+        this.$refs.prodQty.step = 0.001;
+      }
+    },
     redirect(componentName) {
       this.$router.push({name:`${componentName}`});
     }, 
-  deleteProduct(id) {
+    deleteProduct(id) {
       for (const item in this.cart) {
         if (this.cart[item]._id === id) {
           this.cart.splice(item, 1);
@@ -140,31 +145,48 @@ export default {
       }
      
     },
-
     addToCart() {
-      if (this.$refs.prodQty.value <= 0){
-        alert('No ingresó cantidad en el producto')
+      const qtyToAdd = this.$refs.prodQty.value;
+      if (qtyToAdd <= 0 || this.$refs.selectedProd.selectedIndex == 0) {
+        alert('No ingresó ningún producto');
       } else {
+        const id = this.$refs.selectedProd.value;
 
-      const id = this.$refs.selectedProd.value
-      this.productItem = {
-        _id: id,
-        pname: this.getProperty(id,'pname'),
-        cost: this.getProperty(id,'cost'),
-        qty: parseInt(this.$refs.prodQty.value)
-      };
-      for (const item in this.cart) {
-        if (this.cart[item]._id === this.productItem._id) {
-          this.productItem.qty =
-            parseInt(this.cart[item].qty) + parseInt(this.productItem.qty);
-          this.cart.splice(item, 1);
+        const qtyInStock =  this.getProperty(id,'stock');
+        let qtyInCart = null; 
+        if (this.cart.find((element)=>element._id == id) 
+          === undefined) {
+          qtyInCart = 0;
+          console.log("cantidad undefined: " + qtyInCart)
+        } else {
+          qtyInCart = this.cart.find((element)=>
+            element._id == id).qty;
+          console.log("cantidad incart: " + qtyInCart)
+        }
+         const total =  parseFloat(qtyInCart) + parseFloat(qtyToAdd);
+        if (qtyInStock < total) {
+          console.log("ERROR >>> qtyinstock: " + qtyInStock + "  || qtyToAdd: " + qtyToAdd  + "  || qtyinCart " + qtyInCart + "  || total: " + total     )
+          alert ("No hay suficientes stock de este producto para realizar la compra");
+        } else {
+          console.log("PASSED >>> qtyinstock: " + qtyInStock + "  || qtyToAdd: " + qtyToAdd  + "  || qtyinCart " + qtyInCart + "  || total: " + total   )
+
+          this.productItem = {
+            _id: id,
+            pname: this.getProperty(id,'pname'),
+            cost: this.getProperty(id,'cost'),
+            qty: parseFloat(this.$refs.prodQty.value)
+          };
+          for (const item in this.cart) {
+            if (this.cart[item]._id === this.productItem._id) {
+              this.productItem.qty =
+                parseFloat(this.cart[item].qty) + parseFloat(this.productItem.qty);
+              this.cart.splice(item, 1);
+            }
+          }
+          this.cart.push(this.productItem);
+          this.total = this.getTotal();
         }
       }
-      
-      this.cart.push(this.productItem);
-      this.total = this.getTotal();
-      }
-
     },
 
     fetchProducts() {
@@ -172,46 +194,46 @@ export default {
         .get(`${server.baseURL}/product/products`)
         .then(data => (this.products = data.data));
     },
-
- getProperty(id,prop) {
-   const pObj = this.products.find((element)=>element._id == id);
-   return pObj[prop];
-
- },
+    getProperty(id,prop) {
+      const pObj = this.products.find((element)=>element._id == id);
+      return pObj[prop];
+    },
     createInvoice() {
       if (this.cart.length <= 0){
         alert ("No hay Productos Seleccionados")
       } else {
-      const r = confirm("Aprobar factura") 
-      if (r == true ) {
-        if (this.$refs.toDeliver.checked === true) {
-          this.toDeliver = "SI"
-        } else {
-          this.toDeliver = "NO"
+        const r = confirm("Aprobar factura") 
+        if (r == true ) {
+          if (this.$refs.toDeliver.checked === true) {
+            this.toDeliver = "SI"
+          } else {
+            this.toDeliver = "NO"
+          }
+          const invoiceData = {
+            paymentMethod: this.paymentMethod,
+            toDeliver: this.toDeliver,
+            order: this.cart,
+            total: this.total
+          };
+          this.__submitToServer(invoiceData);
         }
-      const invoiceData = {
-        paymentMethod: this.paymentMethod,
-        toDeliver: this.toDeliver,
-        order: this.cart,
-        total: this.total
-      };
-      this.__submitToServer(invoiceData);
-    }}},
-  getTotal(){
-    let total = 0;
-    for(const item in this.cart) {
-      const prod = this.cart[item].cost * this.cart[item].qty
-      total += prod 
-    }
-    return total;
-  },
+      }
+    },
+    getTotal(){
+      let total = 0;
+      for(const item in this.cart) {
+        const prod = this.cart[item].cost * this.cart[item].qty
+        total += prod 
+      }
+      return total;
+    },
     __submitToServer(data) {
-      axios.post(`${server.baseURL}/invoice/create`, data).then(data => {
+      axios.post(`${server.baseURL}/invoice/create`, data)
+        .then(data => {
         this.redirect('Invoice')
       });
     }
   }
-  
 };
 </script>
 

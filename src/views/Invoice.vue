@@ -10,6 +10,7 @@
           <thead>
             <tr>
               <th scope="col">NUMERO</th>
+              <th scope="col">FECHA</th>
               <th scope="col">MÉTODO DE PAGO</th>
               <th scope="col">ENTREGA PENDIENTE</th>
               <th scope="col">TOTAL</th>
@@ -18,6 +19,7 @@
           <tbody>
             <tr v-for="invoice in invoices" :key="invoice._id">
               <td rowspan="1">{{ invoice._id }}</td>
+              <td rowspan="1">{{timeDate(invoice.timestamp)}}</td>
               <td rowspan="1">{{ invoice.paymentMethod }}</td>
               <td rowspan="1">{{ invoice.toDeliver }}</td>
               <td rowspan="1">${{ invoice.total }}</td>
@@ -45,6 +47,12 @@
           <button @click="redirect('CreateInvoice')" style="background:#219E45; padding:10px">
             Nueva Factura
           </button> 
+          <button @click="pettyCashBtn()" style="background:#782D4D; padding:10px; margin-left: 20%">
+            Mostrar Caja
+          </button> 
+          <div v-if="this.showPettyCash == true">
+             Caja Chica: ${{pettyCash}}
+          </div>
         </div>
       </div>
     </div>
@@ -58,19 +66,41 @@ import axios from "axios";
 export default {
   data() {
     return {
-      invoices: []
+      invoices: [],
+      pettyCash: Number,
+      showPettyCash: false
     };
   },
   async created() {
     await this.fetchInvoices();
     await this.transToDeliver();
-          this.$forceUpdate();
+    await this.calcPettyCash()
 
   },
   methods: {
+    pettyCashBtn(){
+      if(this.showPettyCash==false){
+        this.showPettyCash = true 
+      } else {
+        this.showPettyCash = false
+      }
+    },
+    timeDate(timestamp) {
+      return timestamp.substring(5,10);
+    },
+    calcPettyCash() {
+      let total = null;
+      const todayInvoices = null
+      for (const i in this.invoices) {
+        const today = new Date()
+        if ( this.timeDate(this.invoices[i].timestamp) == this.timeDate(today.toISOString())) {
+         total += this.invoices[i].total
+        }
+      }
+      this.pettyCash = total;
+    },
 
-      transToDeliver(){
-        
+      transToDeliver(){  
       for (const i in this.invoices) {
         if (this.invoices[i].toDeliver == true) {
           console.log(this.invoices[i].toDeliver)

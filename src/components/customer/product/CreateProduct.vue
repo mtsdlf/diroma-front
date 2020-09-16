@@ -39,10 +39,13 @@
         </div>
 
         <div class="input-box">
-          <input id="category"
+          <select 
             v-model="category"
-            type="text" placeholder="Categoría"
-          />
+            :required="true"
+            >
+            <option>Almacén</option>
+            <option>Fiambrería</option>
+          </select>
         </div>
         
         <div class="input-box">
