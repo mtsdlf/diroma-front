@@ -1,3 +1,3 @@
 export const server = {
-  baseURL: "http://104.248.7.235:3000"
+  baseURL: "http://68.183.153.163:3000"
 };
