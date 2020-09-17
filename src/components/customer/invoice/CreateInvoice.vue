@@ -133,7 +133,7 @@ export default {
       if (category == "Fiambrería") {
         this.$refs.prodQty.step = 0.001;
       } else {
-        this.$refs.stock.step = 1;
+        this.$refs.prodQty.step = 1;
       }
     },
     redirect(componentName) {
