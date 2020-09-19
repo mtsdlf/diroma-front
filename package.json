@@ -8,14 +8,17 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "express": "4.17.1",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "express": "4.17.1",
+    "lodash": "^4.17.20",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
-    "vue-router": "^3.2.0"
+    "vue-router": "^3.2.0",
+    "vue-scroll": "^2.1.13",
+    "vue-scroll-table": "^0.2.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

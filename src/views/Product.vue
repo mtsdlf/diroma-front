@@ -6,12 +6,19 @@
 
     <div class="console">
       <div class= "console-inner">
+          <button @click="backPage()" style="background:#808080; padding:4px;  margin-right:60%;">
+            atras
+          </button>
+           <button @click="nextPage()" style="background:#808080; padding:4px">
+            adelante
+          </button>
         <table>
           <thead>
             <tr>
               <th scope="col">PRODUCTO</th>
-              <th scope="col">PRECIO</th>
               <th scope="col">STOCK</th>
+              <th scope="col">COSTO</th>
+              <th scope="col">PRECIO</th>
               <th scope="col">CÓDIGO</th>
               <th scope="col">CATEGORÍA</th>
               <th scope="col">DESCRIPCIÓN</th>
@@ -19,10 +26,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="product in products" :key="product._id">
+            <tr v-for="product in activeProducts" :key="product._id">
               <td rowspan="1">{{ product.pname }}</td>
-              <td rowspan="1">${{ product.cost }}</td>
               <td rowspan="1">{{ product.stock }}</td>
+              <td rowspan="1">${{ product.cost }}</td>
+              <td rowspan="1">{{ product.price }}</td>
               <td rowspan="1">{{ product.code }}</td>
               <td rowspan="1">{{ product.category }}</td>
               <td rowspan="1">{{ product.description }}</td>
@@ -51,6 +59,7 @@
           <button @click="redirect('CreateProduct')" style="background:#219E45; padding:10px">
             Nuevo Producto
           </button>
+
         </div>
       </div>
     </div> 
@@ -65,15 +74,39 @@ import axios from "axios";
 export default {
   data() {
     return {
-      products: []
+      products: [],
+      activeProducts: [],
+      currentIndex: 8
     };
   },
 
   async created() {
    await this.fetchProducts();
+   this.loadOnActiveProducts();
   },
 
   methods: {
+
+    nextPage(){
+          if (this.currentIndex>=this.products.length){
+      alert("no hay mas productos para mostrar")
+          } else {
+      this.currentIndex = this.currentIndex + 8;
+      this.loadOnActiveProducts()
+    }},
+    backPage(){
+      if(this.currentIndex<=8){
+        alert("No puede seguir retrocediendo")
+      } else {
+      this.currentIndex = this.currentIndex - 8;
+      this.loadOnActiveProducts()
+      }
+    },
+    loadOnActiveProducts(){
+      this.activeProducts= this.products.slice(this.currentIndex - 8, this.currentIndex);
+      console.log(this.activeProducts);
+
+    },
     timeDate(timestamp) {
       return timestamp.substring(5,10);
     },

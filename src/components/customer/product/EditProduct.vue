@@ -31,6 +31,14 @@
         </div>
 
         <div class="input-box">
+          <input ref="stock"
+            v-model="product.stock"
+            required="true"
+            type="number" step="1" min="0" placeholder="Cantidad(*)" 
+          />
+        </div>
+
+        <div class="input-box">
           <input id="cost"
             v-model="product.cost"
             required="true"
@@ -39,10 +47,10 @@
         </div>
 
         <div class="input-box">
-          <input ref="stock"
-            v-model="product.stock"
+          <input id="price"
+            v-model="product.price"
             required="true"
-            type="number" step="1" min="0" placeholder="Cantidad(*)" 
+            type="number" step="0.01" min="0" placeholder="Precio(*)"
           />
         </div>
 
@@ -123,8 +131,9 @@ export default {
       } else {
       const productData = {
         pname: this.product.pname,
-        cost: this.product.cost,
         stock: this.product.stock,
+        cost: this.product.cost,
+        price: this.product.price,
         code: this.product.code,
         category: this.product.category,
         description: this.product.description,

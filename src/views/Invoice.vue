@@ -6,6 +6,12 @@
 
     <div class="console">
       <div class= "console-inner">
+           <button @click="backPage()" style="background:#808080; padding:4px;  margin-right:60%;">
+            atras
+          </button>
+           <button @click="nextPage()" style="background:#808080; padding:4px">
+            adelante
+          </button>
         <table>
           <thead>
             <tr>
@@ -17,7 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="invoice in invoices" :key="invoice._id">
+            <tr v-for="invoice in activeInvoices" :key="invoice._id">
               <td rowspan="1">{{ invoice._id }}</td>
               <td rowspan="1">{{timeDate(invoice.timestamp)}}</td>
               <td rowspan="1">{{ invoice.paymentMethod }}</td>
@@ -68,16 +74,40 @@ export default {
     return {
       invoices: [],
       pettyCash: Number,
-      showPettyCash: false
+      showPettyCash: false,
+      activeInvoices: [],
+      currentIndex: 8
     };
   },
   async created() {
     await this.fetchInvoices();
+    this.loadOnActiveInvoices();
     await this.transToDeliver();
     await this.calcPettyCash()
 
   },
   methods: {
+    
+    nextPage(){
+          if (this.currentIndex>=this.invoice.length){
+      alert("no hay mas productos para mostrar")
+          } else {
+      this.currentIndex = this.currentIndex + 8;
+      this.loadOnActiveProducts()
+    }},
+    backPage(){
+      if(this.currentIndex<=8){
+        alert("No puede seguir retrocediendo")
+      } else {
+      this.currentIndex = this.currentIndex - 8;
+      this.loadOnActiveInvoices()
+      }
+    },
+    loadOnActiveInvoices(){
+      this.activeInvoices= this.invoices.slice(this.currentIndex - 8, this.currentIndex);
+      console.log(this.activeInvoices);
+
+    },
     pettyCashBtn(){
       if(this.showPettyCash==false){
         this.showPettyCash = true 

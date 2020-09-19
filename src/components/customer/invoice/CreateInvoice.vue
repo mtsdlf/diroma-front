@@ -89,7 +89,7 @@
           <tr v-for="prod in cart" :key="prod._id">
             <td>{{ prod.pname }}</td>
             <td>{{ prod.qty }}</td>
-            <td>{{ prod.cost }}</td>
+            <td>{{ prod.price }}</td>
             <td>
             <button v-on:click="deleteProduct(prod._id)" style="background:#EB6C49;width:100%">
                     Quitar 
@@ -175,7 +175,7 @@ export default {
           this.productItem = {
             _id: id,
             pname: this.getProperty(id,'pname'),
-            cost: this.getProperty(id,'cost'),
+            price: this.getProperty(id,'price'),
             qty: parseFloat(this.$refs.prodQty.value)
           };
           for (const item in this.cart) {
@@ -224,7 +224,7 @@ export default {
     getTotal(){
       let total = 0;
       for(const item in this.cart) {
-        const prod = this.cart[item].cost * this.cart[item].qty
+        const prod = this.cart[item].price * this.cart[item].qty
         total += prod 
       }
       return total;
