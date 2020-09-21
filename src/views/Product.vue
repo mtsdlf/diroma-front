@@ -30,7 +30,7 @@
               <td rowspan="1">{{ product.pname }}</td>
               <td rowspan="1">{{ product.stock }}</td>
               <td rowspan="1">${{ product.cost }}</td>
-              <td rowspan="1">{{ product.price }}</td>
+              <td rowspan="1">${{ product.price }}</td>
               <td rowspan="1">{{ product.code }}</td>
               <td rowspan="1">{{ product.category }}</td>
               <td rowspan="1">{{ product.description }}</td>

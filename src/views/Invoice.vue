@@ -151,12 +151,15 @@ export default {
       
     },
     deleteInvoice(id) {
-      axios
-        .delete(`${server.baseURL}/invoice/delete?invoiceID=${id}`)
-        .then(data => {
-          console.log(data);
-          window.location.reload();
-        });
+      const r = confirm("Esta seguro que desea eliminar el producto del inventario? Los productos en ella no volveran al stock") 
+      if (r == true ) {
+        axios
+          .delete(`${server.baseURL}/invoice/delete?invoiceID=${id}`)
+          .then(data => {
+            console.log(data);
+            window.location.reload();
+          });
+      }
     }
   }
 };

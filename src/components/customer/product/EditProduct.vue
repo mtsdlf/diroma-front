@@ -108,7 +108,7 @@ export default {
           this.$refs.category[1].selected = true;
           break;
         case "Fiambrería":
-          this.$refs.paymentMethod[2].selected = true;
+          this.$refs.category[2].selected = true;
           break;
      }
      if (this.$refs.category.value == "Fiambrería") {
