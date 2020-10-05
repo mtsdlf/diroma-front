@@ -53,6 +53,14 @@
             type="number" step="0.01" min="0" placeholder="Precio(*)"
           />
         </div>
+        
+        <div class="input-box">
+          <input id="mPrice"
+            v-model="product.mPrice"
+            required="true"
+            type="number" step="0.01" min="0" placeholder="Precio Mayorista"
+          />
+        </div>
 
         <div class="input-box">
           <input
@@ -134,6 +142,7 @@ export default {
         stock: this.product.stock,
         cost: this.product.cost,
         price: this.product.price,
+        mPrice: this.product.price,
         code: this.product.code,
         category: this.product.category,
         description: this.product.description,

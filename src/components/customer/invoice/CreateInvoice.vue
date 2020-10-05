@@ -159,35 +159,38 @@ export default {
         if (this.cart.find((element)=>element._id == id) 
           === undefined) {
           qtyInCart = 0;
-          console.log("cantidad undefined: " + qtyInCart)
         } else {
           qtyInCart = this.cart.find((element)=>
             element._id == id).qty;
-          console.log("cantidad incart: " + qtyInCart)
         }
-         const total =  parseFloat(qtyInCart) + parseFloat(qtyToAdd);
+        const total =  parseFloat(qtyInCart) + parseFloat(qtyToAdd);
+        let priceType = null;
         if (qtyInStock < total) {
-          console.log("ERROR >>> qtyinstock: " + qtyInStock + "  || qtyToAdd: " + qtyToAdd  + "  || qtyinCart " + qtyInCart + "  || total: " + total     )
           alert ("No hay suficientes stock de este producto para realizar la compra");
-        } else {
-          console.log("PASSED >>> qtyinstock: " + qtyInStock + "  || qtyToAdd: " + qtyToAdd  + "  || qtyinCart " + qtyInCart + "  || total: " + total   )
-
+        } 
+        if (total >= 1) {
+          priceType = "mPrice";
+        }
+        else {
+           priceType = "price";   
+        }
           this.productItem = {
             _id: id,
             pname: this.getProperty(id,'pname'),
-            price: this.getProperty(id,'price'),
-            qty: parseFloat(this.$refs.prodQty.value)
+            price: this.getProperty(id, priceType),
+            qty:  Number.parseFloat(this.$refs.prodQty.value).toFixed(3)
           };
           for (const item in this.cart) {
             if (this.cart[item]._id === this.productItem._id) {
+              const aux =  parseFloat(this.cart[item].qty) + parseFloat(this.productItem.qty)
               this.productItem.qty =
-                parseFloat(this.cart[item].qty) + parseFloat(this.productItem.qty);
+                 Number.parseFloat(aux).toFixed(3)
               this.cart.splice(item, 1);
             }
           }
           this.cart.push(this.productItem);
-          this.total = this.getTotal();
-        }
+          this. al = this.getTotal();
+        
       }
     },
 
@@ -227,7 +230,8 @@ export default {
         const prod = this.cart[item].price * this.cart[item].qty
         total += prod 
       }
-      return total;
+      this.total = Number.parseFloat(total).toFixed(2)
+      
     },
     __submitToServer(data) {
       axios.post(`${server.baseURL}/invoice/create`, data)

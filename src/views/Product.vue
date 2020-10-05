@@ -19,6 +19,7 @@
               <th scope="col">STOCK</th>
               <th scope="col">COSTO</th>
               <th scope="col">PRECIO</th>
+              <th scope="col">MAYORISTA</th>
               <th scope="col">CÓDIGO</th>
               <th scope="col">CATEGORÍA</th>
               <th scope="col">DESCRIPCIÓN</th>
@@ -31,6 +32,7 @@
               <td rowspan="1">{{ product.stock }}</td>
               <td rowspan="1">${{ product.cost }}</td>
               <td rowspan="1">${{ product.price }}</td>
+              <td rowspan="1">${{ product.mPrice }}</td>
               <td rowspan="1">{{ product.code }}</td>
               <td rowspan="1">{{ product.category }}</td>
               <td rowspan="1">{{ product.description }}</td>

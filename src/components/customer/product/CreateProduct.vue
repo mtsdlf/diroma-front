@@ -56,6 +56,13 @@
         </div>
 
         <div class="input-box">
+          <input id="mPrice" ref="mPrice"
+            v-model="mPrice"
+          
+            type="number"  step="0.01" min="0" placeholder="Precio Mayorista"
+          />
+        </div>
+        <div class="input-box">
           <input id="code"
             v-model="code"
             required="true"
@@ -97,6 +104,7 @@ export default {
       stock: Number,
       cost: Number,
       price: Number,
+      mPrice: Number,
       code: "",
       category: "",
       description: "",
@@ -123,7 +131,8 @@ export default {
         pname: this.pname,
         stock: this.stock,
         cost: this.cost,
-        precio: this.price,
+        price: this.price,
+        mPrice: this.mPrice,
         code: this.code,
         category: this.$refs.category.value,
         description: this.description,
