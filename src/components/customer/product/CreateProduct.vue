@@ -127,6 +127,11 @@ export default {
        if (this.$refs.category.selectedIndex == 0) {
         alert('No ingresó categoría');
       } else {
+        console.log(this.mPrice)
+        if (this.mPrice == 0 || this.mPrice != typeof "number") {
+          this.mPrice = this.price
+          console.log(this.mPrice)
+        }
       const productData = {
         pname: this.pname,
         stock: this.stock,
