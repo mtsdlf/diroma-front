@@ -1,14 +1,24 @@
 <template>
   <div id="app">
       <h1>DI ROMA</h1>
-    <div id="nav">
+    <div v-if="href != 'https://diroma.com.ar/'" id="nav">
       <router-link to="/product"> Stock | </router-link>
       <router-link to="/invoice"> Facturación | </router-link>
     </div>
     <router-view />
   </div>
 </template>
-
+<script>
+export default {
+  data(){
+    return {
+      href : window.location.href
+    }
+  
+  
+}
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
